@@ -5,7 +5,7 @@ Este documento es tu guía de aprendizaje y registro de avances para dominar Ang
 
 ## Plan actualizado
 
-1. Instalación y configuración
+1. Instalación y configuración (completado)
    - Instalación y configuración de Angular CLI 21
 
 2. Fundamentos de Angular 21 (completado)
@@ -13,22 +13,22 @@ Este documento es tu guía de aprendizaje y registro de avances para dominar Ang
    - Uso de Standalone Components (componentes independientes)
    - Modularidad y lazy loading con rutas modernas
 
-3. Consumo de APIs y manejo de estado (en progreso)
+3. Consumo de APIs y manejo de estado (CRUD básico completado)
    - HttpClient y manejo de peticiones asíncronas (ya aplicado en CRUD de categorías)
    - Signals para manejo de estado reactivo (ya aplicado)
    - Integración con librerías modernas de estado (pendiente)
 
-4. Novedades clave de Angular 21 (pendiente de profundizar)
+4. Novedades clave de Angular 21 (aplicado parcialmente)
    - Signals: programación reactiva simplificada (ya aplicado)
    - Control Flow Syntax (`if`, `for`, `switch` en plantillas) (pendiente)
    - Inputs/Outputs mejorados y tipados estrictos (pendiente)
    - Mejoras en el manejo de formularios reactivos (pendiente)
 
-5. Desarrollo moderno (pendiente)
-   - Uso de TypeScript estricto y tipado avanzado
+5. Desarrollo moderno (en progreso)
+   - Uso de TypeScript estricto y tipado avanzado (configurado)
    - Migración de servicios y pipes a standalone
-   - Pruebas unitarias y de integración con TestBed y Harnesses
-   - Uso de herramientas modernas: Angular DevTools, ESLint, Prettier
+   - Pruebas unitarias con TestBed (smoke test de categorías configurado)
+   - Uso de herramientas modernas: Prettier configurado; ESLint y Angular DevTools pendientes de documentar
 
 6. Optimización y buenas prácticas (pendiente)
    - Optimización de performance: ChangeDetection, trackBy, defer, hydration
@@ -39,8 +39,29 @@ Este documento es tu guía de aprendizaje y registro de avances para dominar Ang
 
 Notas de avance:
 - Ya aplicamos consumo de APIs REST y signals para estado en el CRUD de categorías.
-- Faltan: pruebas, optimización, control flow en plantillas, inputs/outputs avanzados, manejo de estado avanzado, etc.
-- Siguiente paso sugerido: profundizar en novedades de Angular 21 y desarrollo moderno (tipado, pruebas, herramientas, optimización).
+- Ya existe ruta lazy hacia `categorias`, `provideHttpClient()` en la configuración global y formulario template-driven con `FormsModule`.
+- Ya hay un smoke test de `Categorias` con TestBed y backend HTTP de pruebas.
+- Faltan: optimización, control flow moderno en plantillas, inputs/outputs avanzados, manejo de estado avanzado, ESLint, Angular DevTools y despliegue.
+- Siguiente paso sugerido: mejorar tipado del CRUD con una interfaz `Categoria`, migrar la plantilla a control flow moderno y ampliar pruebas.
+
+## Cierre para compartir
+
+Hasta esta parte el proyecto queda como una base Angular 21 funcional para aprendizaje:
+
+- Aplicación Angular 21 standalone con rutas modernas.
+- Configuración global en `app.config.ts` usando `provideRouter()` y `provideHttpClient()`.
+- Componente standalone `Categorias` cargado con `loadComponent`.
+- CRUD básico de categorías contra API REST:
+  - `GET /categorias` para listar.
+  - `POST /categorias` para crear.
+  - `PUT /categorias/{id}` para editar.
+  - `DELETE /categorias/{id}` para eliminar.
+- Estado local con `signal`.
+- Formulario con `FormsModule` y `ngModel`.
+- TypeScript estricto habilitado desde `tsconfig.json`.
+- Prueba inicial de creación del componente con TestBed.
+
+No se considera cerrado todavía: manejo de errores HTTP, loading states, tipado fuerte del modelo, validaciones visuales, control flow moderno (`@if`, `@for`), pruebas de interacción y optimización para producción.
 
 
 
@@ -87,31 +108,30 @@ Notas de avance:
 - **app.ts** (o `app.config.ts`, `app.routes.ts`): Define la configuración principal, rutas y lógica de arranque.
 - **app.html**: Es la plantilla del componente raíz.
 
-##### app.html (antes y después)
+##### app.html con interpolación
 
-Ejemplo de un app.html generado por defecto (antes):
+Para explicar binding al alumno, conserva una plantilla simple pero dinámica:
 ```html
-<div class="container">
-  <img src="...">
-  <h1>Welcome to ng21training!</h1>
-  <p>Congratulations! Your app is running.</p>
-  <!-- Otros elementos, menús, enlaces, etc. -->
-</div>
-```
+<main class="main">
+  <div class="content">
+    <div class="left-side">
+      <h1>Hello, {{ title() }}</h1>
+      <p>Congratulations! Your app is running.</p>
+    </div>
+  </div>
+</main>
 
-Deja solo lo mínimo funcional (después):
-```html
-<h1>Angular 21 Demo</h1>
-<router-outlet></router-outlet>
+<router-outlet />
 ```
 
 **¿Qué hacer?**
 1. Abre cada uno de estos archivos y revisa su contenido.
-2. En `app.html`, elimina todo lo que no sea esencial para la estructura (puedes dejar solo el título y el `<router-outlet>`).
-3. Observa cómo se conectan: `index.html` carga el selector raíz, `main.ts` arranca la app, y `app.html` es la vista principal.
-4. Anota cualquier duda o hallazgo en el roadmap.
+2. En `app.ts`, observa el signal `title = signal('ng21training')`.
+3. En `app.html`, observa cómo `{{ title() }}` muestra ese valor en la vista usando interpolación.
+4. Observa cómo se conectan: `index.html` carga el selector raíz, `main.ts` arranca la app, y `app.html` es la vista principal.
+5. Anota cualquier duda o hallazgo en el roadmap.
 
-> Así tendrás una base limpia y clara para entender cómo Angular estructura y arranca una aplicación.
+> Así tendrás una base clara para entender cómo Angular estructura, arranca y renderiza datos dinámicos en una aplicación.
 
 ### 2.2 Uso de Standalone Components
 
@@ -210,6 +230,37 @@ Después (listado real):
   <li *ngFor="let cat of categorias()">{{ cat.nombre }}</li>
 </ul>
 ```
+
+#### Extra didáctico: estado de carga con `loading`
+
+Para mostrar al alumno cómo una vista puede reaccionar al estado de una petición HTTP, se agregó un signal `loading`:
+
+```ts
+loading = signal(false);
+```
+
+Antes de ejecutar el `GET`, se activa el estado de carga:
+
+```ts
+cargarCategorias() {
+  this.loading.set(true);
+
+  this.http.get<any[]>('http://localhost:7091/api/v1/categorias')
+    .subscribe({
+      next: data => this.categorias.set(data),
+      complete: () => this.loading.set(false),
+      error: () => {},
+    });
+}
+```
+
+En la plantilla se muestra un mensaje mientras `loading()` sea verdadero:
+
+```html
+<p *ngIf="loading()">Cargando categorias...</p>
+```
+
+> Nota didáctica: en esta etapa, si la petición falla, no se apaga `loading` en el bloque `error` para que el mensaje permanezca visible y el alumno pueda observar el cambio de estado. Más adelante conviene reemplazar esto por un estado de error explícito, por ejemplo `errorMessage`, para diferenciar "cargando" de "falló la carga".
 
 3. En la vista, muestra el listado y agrega formularios para crear/editar.
 

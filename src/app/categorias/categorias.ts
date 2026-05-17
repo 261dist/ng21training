@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Categorias {
   categorias = signal<any[]>([]);
+  loading = signal(false);
   formNombre = '';
   formDescripcion = '';
   editandoId: number|null = null;
@@ -21,8 +22,13 @@ export class Categorias {
   }
 
   cargarCategorias() {
+    this.loading.set(true);
     this.http.get<any[]>('http://localhost:7091/api/v1/categorias')
-      .subscribe(data => this.categorias.set(data));
+      .subscribe({
+        next: data => this.categorias.set(data),
+        complete: () => this.loading.set(false),
+        error: () => {},
+      });
   }
 
   crearCategoria() {

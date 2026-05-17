@@ -1,4 +1,6 @@
 <h2>Gestión de categorías</h2>
+<p *ngIf="loading()">Cargando categorias...</p>
+
 <form (ngSubmit)="editandoId ? guardarEdicion() : crearCategoria()">
   <table>
     <tr>

@@ -331,13 +331,20 @@ Esto permite cargar el componente solo cuando se navega a esa ruta, sin necesida
 
 ---
 
+
 ## Paso 3: Novedades clave de Angular 21
 
-- Standalone components: El CRUD de categorías se implementó como componente standalone, sin NgModule.
-- Signals: Se usaron signals para el estado reactivo local (`categorias = signal<any[]>([])`).
-- Lazy loading: Aplicado en las rutas.
-- HttpClient moderno: Usado para consumir APIs.
-- (Pendiente) Control Flow Syntax (if, for, switch en plantillas), Inputs/Outputs mejorados, formularios reactivos avanzados.
+En el CRUD de categorías ya aplicamos varias novedades importantes:
+
+- **Standalone components:** El CRUD de categorías se implementó como componente standalone, sin NgModule.
+- **Signals:** Se usaron signals para el estado reactivo local (`categorias = signal<any[]>([])`).
+- **Lazy loading:** Aplicado en las rutas con `loadComponent`.
+- **HttpClient moderno:** Usado para consumir APIs REST.
+
+**Pendiente de profundizar:**
+- Control Flow Syntax (`if`, `for`, `switch` en plantillas)
+- Inputs/Outputs mejorados y tipados estrictos
+- Mejoras en el manejo de formularios reactivos
 
 ---
 

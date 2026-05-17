@@ -3,43 +3,37 @@
 Este documento es tu guía de aprendizaje y registro de avances para dominar Angular 21, aprovechando sus nuevas características y dejando atrás lo legacy.
 
 
-Plan actualizado (2026-05-16):
+## Plan actualizado
 
+1. Instalación y configuración
+   - Instalación y configuración de Angular CLI 21
 
-<details open>
-<summary><strong>Ver plan detallado</strong></summary>
+2. Fundamentos de Angular 21 (completado)
+   - Estructura de un proyecto Angular moderno
+   - Uso de Standalone Components (componentes independientes)
+   - Modularidad y lazy loading con rutas modernas
 
-1. <strong>Instalación y configuración</strong>  
- • Instalación y configuración de Angular CLI 21
+3. Consumo de APIs y manejo de estado (en progreso)
+   - HttpClient y manejo de peticiones asíncronas (ya aplicado en CRUD de categorías)
+   - Signals para manejo de estado reactivo (ya aplicado)
+   - Integración con librerías modernas de estado (pendiente)
 
-2. <strong>Fundamentos de Angular 21</strong> <span style="color:green;">(completado)</span>  
- • Estructura de un proyecto Angular moderno  
- • Uso de <em>Standalone Components</em> (componentes independientes)  
- • Modularidad y <em>lazy loading</em> con rutas modernas
+4. Novedades clave de Angular 21 (pendiente de profundizar)
+   - Signals: programación reactiva simplificada (ya aplicado)
+   - Control Flow Syntax (`if`, `for`, `switch` en plantillas) (pendiente)
+   - Inputs/Outputs mejorados y tipados estrictos (pendiente)
+   - Mejoras en el manejo de formularios reactivos (pendiente)
 
-3. <strong>Consumo de APIs y manejo de estado</strong> <span style="color:orange;">(en progreso)</span>  
- • <em>HttpClient</em> y manejo de peticiones asíncronas <span style="color:green;">(ya aplicado en CRUD de categorías)</span>  
- • Signals para manejo de estado reactivo <span style="color:green;">(ya aplicado)</span>  
- • Integración con librerías modernas de estado <span style="color:gray;">(pendiente)</span>
+5. Desarrollo moderno (pendiente)
+   - Uso de TypeScript estricto y tipado avanzado
+   - Migración de servicios y pipes a standalone
+   - Pruebas unitarias y de integración con TestBed y Harnesses
+   - Uso de herramientas modernas: Angular DevTools, ESLint, Prettier
 
-4. <strong>Novedades clave de Angular 21</strong> <span style="color:gray;">(pendiente de profundizar)</span>  
- • Signals: programación reactiva simplificada <span style="color:green;">(ya aplicado)</span>  
- • Control Flow Syntax (<code>if</code>, <code>for</code>, <code>switch</code> en plantillas) <span style="color:gray;">(pendiente)</span>  
- • Inputs/Outputs mejorados y tipados estrictos <span style="color:gray;">(pendiente)</span>  
- • Mejoras en el manejo de formularios reactivos <span style="color:gray;">(pendiente)</span>
-
-5. <strong>Desarrollo moderno</strong> <span style="color:gray;">(pendiente)</span>  
- • Uso de TypeScript estricto y tipado avanzado  
- • Migración de servicios y pipes a standalone  
- • Pruebas unitarias y de integración con TestBed y Harnesses  
- • Uso de herramientas modernas: Angular DevTools, ESLint, Prettier
-
-6. <strong>Optimización y buenas prácticas</strong> <span style="color:gray;">(pendiente)</span>  
- • Optimización de performance: <em>ChangeDetection</em>, <code>trackBy</code>, <code>defer</code>, hydration  
- • Accesibilidad y SEO en Angular 21  
- • Deploy moderno: SSR, prerendering y hosting en Vercel/Netlify
-
-</details>
+6. Optimización y buenas prácticas (pendiente)
+   - Optimización de performance: ChangeDetection, trackBy, defer, hydration
+   - Accesibilidad y SEO en Angular 21
+   - Deploy moderno: SSR, prerendering y hosting en Vercel/Netlify
 
 ---
 
@@ -144,96 +138,68 @@ PS C:\ms1\ProyectosMS2026\ng21training>
 ### 2.3 CRUD moderno de Categorías (Angular 21)
 
 1. Agrega la ruta lazy para el componente:
-  <div align="center">
-    <h1>🛣️ Roadmap Angular 21</h1>
-  </div>
+   ```ts
+   {
+     path: 'categorias',
+     loadComponent: () => import('./app/categorias/categorias').then(m => m.Categorias)
+   }
+   ```
+
+2. En el componente `categorias`, implementa:
+   - Listado de categorías (GET)
+   - Crear nueva categoría (POST)
+   - Editar categoría (PUT/PATCH)
+   - Eliminar categoría (DELETE)
+   - Usa signals para el estado local y HttpClient para las peticiones.
+   - Solo usa RxJS si necesitas lógica reactiva avanzada.
+
+#### Ejemplo antes y después (GET con signals)
+
+**Antes (componente vacío):**
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-categorias',
+  imports: [],
+  templateUrl: './categorias.html',
+  styleUrl: './categorias.scss',
+})
+export class Categorias {}
+```
+
+**Después (listado con signals y HttpClient):**
+```ts
+import { Component, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-categorias',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './categorias.html',
+  styleUrl: './categorias.scss',
+})
+export class Categorias {
+  categorias = signal<any[]>([]);
+
+  constructor(private http: HttpClient) {
+    this.cargarCategorias();
+  }
+
+  cargarCategorias() {
+    this.http.get<any[]>('http://localhost:7091/api/v1/categorias')
+      .subscribe(data => this.categorias.set(data));
+  }
+}
+```
+
+
+**En la vista (categorias.html):**
 
 Antes (solo placeholder):
-
-
-  ### 📅 Plan actualizado (2026-05-16)
-
-
-  <details open>
-  <summary><strong>Ver plan detallado</strong></summary>
-
-  1. <strong>Instalación y configuración</strong>  
-   • Instalación y configuración de Angular CLI 21
-
-  2. <strong>Fundamentos de Angular 21</strong> <span style="color:green;">(completado)</span>  
-   • Estructura de un proyecto Angular moderno  
-   • Uso de <em>Standalone Components</em> (componentes independientes)  
-   • Modularidad y <em>lazy loading</em> con rutas modernas
-
-  3. <strong>Consumo de APIs y manejo de estado</strong> <span style="color:orange;">(en progreso)</span>  
-   • <em>HttpClient</em> y manejo de peticiones asíncronas <span style="color:green;">(ya aplicado en CRUD de categorías)</span>  
-   • Signals para manejo de estado reactivo <span style="color:green;">(ya aplicado)</span>  
-   • Integración con librerías modernas de estado <span style="color:gray;">(pendiente)</span>
-
-  4. <strong>Novedades clave de Angular 21</strong> <span style="color:gray;">(pendiente de profundizar)</span>  
-   • Signals: programación reactiva simplificada <span style="color:green;">(ya aplicado)</span>  
-   • Control Flow Syntax (<code>if</code>, <code>for</code>, <code>switch</code> en plantillas) <span style="color:gray;">(pendiente)</span>  
-   • Inputs/Outputs mejorados y tipados estrictos <span style="color:gray;">(pendiente)</span>  
-   • Mejoras en el manejo de formularios reactivos <span style="color:gray;">(pendiente)</span>
-
-  5. <strong>Desarrollo moderno</strong> <span style="color:gray;">(pendiente)</span>  
-   • Uso de TypeScript estricto y tipado avanzado  
-   • Migración de servicios y pipes a standalone  
-   • Pruebas unitarias y de integración con TestBed y Harnesses  
-   • Uso de herramientas modernas: Angular DevTools, ESLint, Prettier
-
-  6. <strong>Optimización y buenas prácticas</strong> <span style="color:gray;">(pendiente)</span>  
-   • Optimización de performance: <em>ChangeDetection</em>, <code>trackBy</code>, <code>defer</code>, hydration  
-   • Accesibilidad y SEO en Angular 21  
-   • Deploy moderno: SSR, prerendering y hosting en Vercel/Netlify
-
-  </details>
-
-  ---
-
-  #### 📝 Notas de avance
-
-  - Ya aplicamos consumo de APIs REST y signals para estado en el CRUD de categorías.
-  - **Faltan:** pruebas, optimización, control flow en plantillas, inputs/outputs avanzados, manejo de estado avanzado, etc.
-  - **Siguiente paso sugerido:** profundizar en novedades de Angular 21 y desarrollo moderno (tipado, pruebas, herramientas, optimización).
-
-  ---
-
-  ## 1️⃣ Paso 1: Instalación y configuración
-
-  ### Instalación
-
-  - Descargar Node.js: [nodejs.org/es/download](https://nodejs.org/es/download)
-  - Instalar Angular 21: [angular.dev/installation](https://angular.dev/installation)
-  - Comando recomendado:
-
-    ```sh
-    npm install -g @angular/cli@21
-    ```
-
-  - Crear un nuevo proyecto Angular 21:
-
-    ```sh
-    ng new erpng --routing --style=scss --standalone --ssr=false --package-manager=npm --skip-git
-    ```
-    <sub>(Responde "no" a todas las preguntas adicionales)</sub>
-
-  ---
-
-  ## 2️⃣ Paso 2: Fundamentos de Angular 21
-
-  ### 2.1 Estructura de un proyecto Angular moderno
-
-  1. Explora la estructura de carpetas y archivos principales generados por Angular CLI:
-     - `src/`: Código fuente de la app.
-     - `src/app/`: Componentes, servicios y lógica principal.
-     - `src/main.ts`: Punto de entrada de la app.
-     - `angular.json`: Configuración del proyecto.
-     - `package.json`: Dependencias y scripts.
-     - `tsconfig.json`: Configuración de TypeScript.
-  2. Abre y revisa cada archivo para familiarizarte con su propósito.
-
-  #### 2.1.1 Entendiendo y simplificando los archivos clave
+```html
 categorias works!
 ```
 
@@ -366,27 +332,19 @@ Esto permite cargar el componente solo cuando se navega a esa ruta, sin necesida
 ---
 
 
-
 ## Paso 3: Novedades clave de Angular 21
 
-<details>
-<summary><strong>¿Qué novedades de Angular 21 ya aplicamos en el CRUD de categorías?</strong></summary>
+En el CRUD de categorías ya aplicamos varias novedades importantes:
 
-- <strong>Standalone components:</strong> El CRUD de categorías se implementó como componente standalone, sin NgModule.
-- <strong>Signals:</strong> Se usaron signals para el estado reactivo local (<code>categorias = signal&lt;any[]&gt;([])</code>).
-- <strong>Lazy loading:</strong> Aplicado en las rutas con <code>loadComponent</code>.
-- <strong>HttpClient moderno:</strong> Usado para consumir APIs REST.
+- **Standalone components:** El CRUD de categorías se implementó como componente standalone, sin NgModule.
+- **Signals:** Se usaron signals para el estado reactivo local (`categorias = signal<any[]>([])`).
+- **Lazy loading:** Aplicado en las rutas con `loadComponent`.
+- **HttpClient moderno:** Usado para consumir APIs REST.
 
-</details>
-
-<details>
-<summary><strong>Pendiente de profundizar</strong></summary>
-
-- Control Flow Syntax (<code>if</code>, <code>for</code>, <code>switch</code> en plantillas)
+**Pendiente de profundizar:**
+- Control Flow Syntax (`if`, `for`, `switch` en plantillas)
 - Inputs/Outputs mejorados y tipados estrictos
 - Mejoras en el manejo de formularios reactivos
-
-</details>
 
 ---
 

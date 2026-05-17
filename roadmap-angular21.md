@@ -5,12 +5,41 @@ Este documento es tu guía de aprendizaje y registro de avances para dominar Ang
 
 Plan actualizado (2026-05-16):
 
-1. Instalación y configuración
-2. Fundamentos de Angular 21
-3. Consumo de APIs y manejo de estado
-4. Novedades clave de Angular 21
-5. Desarrollo moderno
-6. Optimización y buenas prácticas
+
+<details open>
+<summary><strong>Ver plan detallado</strong></summary>
+
+1. <strong>Instalación y configuración</strong>  
+ • Instalación y configuración de Angular CLI 21
+
+2. <strong>Fundamentos de Angular 21</strong> <span style="color:green;">(completado)</span>  
+ • Estructura de un proyecto Angular moderno  
+ • Uso de <em>Standalone Components</em> (componentes independientes)  
+ • Modularidad y <em>lazy loading</em> con rutas modernas
+
+3. <strong>Consumo de APIs y manejo de estado</strong> <span style="color:orange;">(en progreso)</span>  
+ • <em>HttpClient</em> y manejo de peticiones asíncronas <span style="color:green;">(ya aplicado en CRUD de categorías)</span>  
+ • Signals para manejo de estado reactivo <span style="color:green;">(ya aplicado)</span>  
+ • Integración con librerías modernas de estado <span style="color:gray;">(pendiente)</span>
+
+4. <strong>Novedades clave de Angular 21</strong> <span style="color:gray;">(pendiente de profundizar)</span>  
+ • Signals: programación reactiva simplificada <span style="color:green;">(ya aplicado)</span>  
+ • Control Flow Syntax (<code>if</code>, <code>for</code>, <code>switch</code> en plantillas) <span style="color:gray;">(pendiente)</span>  
+ • Inputs/Outputs mejorados y tipados estrictos <span style="color:gray;">(pendiente)</span>  
+ • Mejoras en el manejo de formularios reactivos <span style="color:gray;">(pendiente)</span>
+
+5. <strong>Desarrollo moderno</strong> <span style="color:gray;">(pendiente)</span>  
+ • Uso de TypeScript estricto y tipado avanzado  
+ • Migración de servicios y pipes a standalone  
+ • Pruebas unitarias y de integración con TestBed y Harnesses  
+ • Uso de herramientas modernas: Angular DevTools, ESLint, Prettier
+
+6. <strong>Optimización y buenas prácticas</strong> <span style="color:gray;">(pendiente)</span>  
+ • Optimización de performance: <em>ChangeDetection</em>, <code>trackBy</code>, <code>defer</code>, hydration  
+ • Accesibilidad y SEO en Angular 21  
+ • Deploy moderno: SSR, prerendering y hosting en Vercel/Netlify
+
+</details>
 
 ---
 

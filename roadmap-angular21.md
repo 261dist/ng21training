@@ -161,7 +161,7 @@ PS C:\ms1\ProyectosMS2026\ng21training>
    ```ts
    {
      path: 'categorias',
-     loadComponent: () => import('./app/categorias/categorias').then(m => m.Categorias)
+     loadComponent: () => import('./categorias/categorias').then(m => m.Categorias)
    }
    ```
 
